@@ -59,6 +59,17 @@ const updateArrRecentRequset = (content, countRecent = 3)=>
     
     addedRecentShow(arrRecentRequest);
 }
+const isRepeat = (content,arr) =>
+{
+    for(let i of arr)
+    {
+        if(i.name && i.name === content)
+        {
+            return true;
+        }
+    }
+    return false;
+}
 const recordToLocalStorage = (content) =>
 {
     try 
@@ -70,12 +81,16 @@ const recordToLocalStorage = (content) =>
             if(localStorage.getItem('shows'))
             {
                 const arr = JSON.parse(localStorage.getItem('shows'));
-                arr.push(show);
-                if (arr.length > maxShowList)
+                if(isRepeat(content,arr) === false)
                 {
-                    arr.shift();
+                    arr.push(show);
+                    if (arr.length > maxShowList)
+                    {
+                        arr.shift();
+                    }
+                    localStorage.setItem('shows',JSON.stringify(arr));
                 }
-                localStorage.setItem('shows',JSON.stringify(arr));
+                
             }else
             {
                 const str = '[' + JSON.stringify(show) + ']';
