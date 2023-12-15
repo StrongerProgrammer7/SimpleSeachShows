@@ -1,0 +1,15 @@
+{
+  "name": "locationstorage",
+  "version": "1.0.0",
+  "description": "Simple search",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "gh-pages -d ."
+  },
+  "keywords": ["html","css","js","bootstrap","localStorage"],
+  "author": "Abduykov Z.M.",
+  "license": "ISC",
+  "dependencies": {
+    "gh-pages": "^6.1.0"
+  }
+}
