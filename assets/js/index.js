@@ -1,4 +1,6 @@
 // @ts-nocheck
+import {getLocalStorageItem,setLocalStorageItem} from "./helper.js";
+
 const getAllShow_url = 'https://api.tvmaze.com/shows';
 const baseUrl = 'https://api.tvmaze.com/search/shows';
 const getAllByPage_url = 'https://api.tvmaze.com/shows?page=';
@@ -75,29 +77,27 @@ const recordToLocalStorage = (content) =>
     try 
     {
         console.log('recordToLocalStorage');
-        if(localStorage)
+        const show = {date:Date.now(), name:content}; 
+        const arr = getLocalStorageItem("shows");
+        if(arr)
         {
-            const show = {date:Date.now(), name:content}; 
-            if(localStorage.getItem('shows'))
+            if(isRepeat(content,arr) === false)
             {
-                const arr = JSON.parse(localStorage.getItem('shows'));
-                if(isRepeat(content,arr) === false)
+                arr.push(show);
+                if (arr.length > maxShowList)
                 {
-                    arr.push(show);
-                    if (arr.length > maxShowList)
-                    {
-                        arr.shift();
-                    }
-                    localStorage.setItem('shows',JSON.stringify(arr));
+                    arr.shift();
                 }
-                
-            }else
-            {
-                const str = '[' + JSON.stringify(show) + ']';
-                localStorage.setItem('shows',str);
+                const json = JSON.stringify(arr);
+                setLocalStorageItem("shows",json);
             }
-            updateArrRecentRequset(content);
+        }else
+        {
+            const json = '[' + JSON.stringify(show) + ']';
+            setLocalStorageItem("shows",json);
         }
+        updateArrRecentRequset(content);
+    
     } catch (error) 
     {
 
@@ -111,37 +111,35 @@ const getNameShowsFromLocalStorage = (word = '',countGetData = 5) =>
     const data = [];
     try 
     { 
-        if(localStorage)
+        const arr = getLocalStorageItem("shows");
+        if(arr)
         {
-            if(localStorage.getItem('shows'))
+            if(word && word!== '')
             {
-                let arr = JSON.parse(localStorage.getItem('shows'));
-                if(word && word!== '')
+                let c = 0;
+                for(let i = 0; i< arr.length;i++)
                 {
-                    let c = 0;
-                    for(let i = 0; i< arr.length;i++)
+                    let name = arr[i].name.toLowerCase();
+                    word = word.toLowerCase();
+                    if(name.search(word) !== -1)
                     {
-                        let name = arr[i].name.toLowerCase();
-                        word = word.toLowerCase();
-                        if(name.search(word) !== -1)
-                        {
-                            c++;
-                            data.push(arr[i].name);
-                        }
-                        if(c >= countGetData)
-                            return data;
+                        c++;
+                        data.push(arr[i].name);
                     }
-                }else
+                    if(c >= countGetData)
+                        return data;
+                }
+            }else
+            {
+                const end = arr.length - countGetData < 0 ? 0 : arr.length - countGetData;
+                for(let i=arr.length-1; i>=end ;i--)
                 {
-                    const end = arr.length - countGetData < 0 ? 0 : arr.length - countGetData;
-                    for(let i=arr.length-1; i>=end ;i--)
-                    {
-                        if(arr[i].name)
-                            data.push(arr[i].name);
-                    }
+                    if(arr[i].name)
+                        data.push(arr[i].name);
                 }
             }
-        }    
+        }
+   
         return data;
     } catch (error) 
     {
