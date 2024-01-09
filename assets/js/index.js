@@ -202,40 +202,33 @@ const fillListShows = (data,req = null) =>
 }
 const getShows = (params={},embeded = '', page = 1) =>
 {
-    try 
+    let url = getAllByPage_url + page;
+    if (params.q && params.q !== '')
     {
-        let url = getAllByPage_url + page;
-        if (params.q && params.q !== '')
-        {
-            url = baseUrl + `?q=${params.q}`;
-        }
-        fetch(url,
-        {
-            method:'GET'
-        })
-        .then((response) =>
-        {
-            if(response.ok === false)
-            {
-                return response.text().then(text => { throw new Error(text)});
-            }
-            return response.json();
-        })
-        .then(data => 
-        {
-            const req = params.q && params.q !== '' ? params.q : null;
-            fillListShows(data,req);
-        })
-        .catch((error) =>
-        {
-            console.error(error);
-            console.log('Error from server');
-        });
-    } catch (error) 
-    {
-        console.log('Techinal problem check code');
-        console.error(error);    
+        url = baseUrl + `?q=${params.q}`;
     }
+    fetch(url,
+    {
+        method:'GET'
+    })
+    .then((response) =>
+    {
+        if(response.ok === false)
+        {
+            return response.text().then(text => { throw new Error(text)});
+        }
+        return response.json();
+    })
+    .then(data => 
+    {
+        const req = params.q && params.q !== '' ? params.q : null;
+        fillListShows(data,req);
+    })
+    .catch((error) =>
+    {
+        console.error(error);
+        console.log('Error from server');
+    });
 }
 
 
@@ -270,38 +263,35 @@ if(input)
 
 const showImgShow = (content) =>
 {
-    try 
+    fetch(baseUrl + '?q=' + content)
+    .then((response) =>
     {
-        fetch(baseUrl + '?q=' + content)
-        .then((response) =>
+        if(response.ok === false)
         {
-            if(response.ok === false)
-            {
-                throw new Error('Error from server');
-            }
-            return response.json();
-        })    
-        .then(data => 
+            throw new Error('Error from server');
+        }
+        return response.json();
+    })    
+    .then(data => 
+    {
+        console.log(data);
+        if(data && data.length !==0)
         {
-            console.log(data);
-            if(data && data.length !==0)
+            if(data[0].show.image.medium)
             {
-                if(data[0].show.image.medium)
-                {
-                    imgShow.src = data[0].show.image.medium;
-                }else
-                {
-                    imgShow.src = data[0].image.medium;
-                }
+                imgShow.src = data[0].show.image.medium;
+            }else
+            {
+                imgShow.src = data[0].image.medium;
             }
-                
-        })
-        .catch(error => console.error(error));
-    } catch (error) 
+        }
+            
+    })
+    .catch(error => 
     {
         console.error(error);
-        throw new Error('Error with get data by content');    
-    }
+        throw new Error('Error with get data by content'); 
+    });
 }
 
 document.addEventListener('click',(e) =>
