@@ -7,7 +7,13 @@
     "deploy": "gh-pages -d ."
   },
   "type": "module",
-  "keywords": ["html","css","js","bootstrap","localStorage"],
+  "keywords": [
+    "html",
+    "css",
+    "js",
+    "bootstrap",
+    "localStorage"
+  ],
   "author": "Abduykov Z.M.",
   "license": "ISC",
   "dependencies": {

@@ -229,20 +229,25 @@ const getShows = (params={},embeded = '', page = 1) =>
     });
 }
 
+     
+const decorator_input = _.debounce((event)=>
+{
+    console.log('Input');
+    clearListChild(listShow);
+    const text = event.target.value;
+    
+    if(text && text !== '')
+    {
+        getShows({q:text}); 
+    }else
+        getShows();
+},1000);
 
 if(input)
 {
-    input.addEventListener('input',(event,val)=>
+    input.addEventListener('input',async (event)=>
     {
-        console.log('Input');
-        clearListChild(listShow);
-        const text = event.target.value;
-        
-        if(text && text !== '')
-        {
-            getShows({q:text}); 
-        }else
-            getShows();
+        await decorator_input(event);
     });
 
     input.addEventListener('focus',(e)=>
