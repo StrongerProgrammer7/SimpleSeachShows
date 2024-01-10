@@ -74,82 +74,65 @@ const isRepeat = (content,arr) =>
 }
 const recordToLocalStorage = (content) =>
 {
-    try 
+    console.log('recordToLocalStorage');
+    const show = {date:Date.now(), name:content}; 
+    const arr = getLocalStorageItem("shows");
+    if(arr)
     {
-        console.log('recordToLocalStorage');
-        const show = {date:Date.now(), name:content}; 
-        const arr = getLocalStorageItem("shows");
-        if(arr)
+        if(isRepeat(content,arr) === false)
         {
-            if(isRepeat(content,arr) === false)
+            arr.push(show);
+            if (arr.length > maxShowList)
             {
-                arr.push(show);
-                if (arr.length > maxShowList)
-                {
-                    arr.shift();
-                }
-                const json = JSON.stringify(arr);
-                setLocalStorageItem("shows",json);
+                arr.shift();
             }
-        }else
-        {
-            const json = '[' + JSON.stringify(show) + ']';
+            const json = JSON.stringify(arr);
             setLocalStorageItem("shows",json);
         }
-        updateArrRecentRequset(content);
-    
-    } catch (error) 
+    }else
     {
-
-        console.error(error);
-        throw new Error('Error with record to local storage'); 
+        const json = '[' + JSON.stringify(show) + ']';
+        setLocalStorageItem("shows",json);
     }
+    updateArrRecentRequset(content);
+    
+    
 }
 
 const getNameShowsFromLocalStorage = (word = '',countGetData = 5) =>
 {
     const data = [];
-    try 
-    { 
-        const arr = getLocalStorageItem("shows");
-        if(arr)
+    const arr = getLocalStorageItem("shows");
+    if(arr)
+    {
+        if(word && word!== '')
         {
-            if(word && word!== '')
+            let countFound = 0;
+            for(let i = 0; i< arr.length;i++)
             {
-                let c = 0;
-                for(let i = 0; i< arr.length;i++)
+                let name = arr[i].name.toLowerCase();
+                word = word.toLowerCase();
+                if(name.search(word) !== -1)
                 {
-                    let name = arr[i].name.toLowerCase();
-                    word = word.toLowerCase();
-                    if(name.search(word) !== -1)
-                    {
-                        c++;
-                        data.push(arr[i].name);
-                    }
-                    if(c >= countGetData)
-                        return data;
+                    countFound++;
+                    data.push(arr[i].name);
                 }
-            }else
+                if(countFound >= countGetData)
+                    return data;
+            }
+        }else
+        {
+            const end = arr.length - countGetData < 0 ? 0 : arr.length - countGetData;
+            for(let i=arr.length-1; i>=end ;i--)
             {
-                const end = arr.length - countGetData < 0 ? 0 : arr.length - countGetData;
-                for(let i=arr.length-1; i>=end ;i--)
-                {
-                    if(arr[i].name)
-                        data.push(arr[i].name);
-                }
+                if(arr[i].name)
+                    data.push(arr[i].name);
             }
         }
-   
-        return data;
-    } catch (error) 
-    {
-        console.error(error);
-        throw new Error('Error with get data from localstorage');    
     }
-    finally
-    {
-        return data;
-    }
+
+    return data;
+    
 }
 
 const getRandomIntegerBeetwenMinMax = (min,max) =>
@@ -299,29 +282,19 @@ const showImgShow = (content) =>
 
 document.addEventListener('click',(e) =>
 {
-    try
+    if(e.target)
     {
-        if(e.target)
+        if(e.target.parentNode && e.target.parentNode.id === 'listShow')
         {
-            if(e.target.parentNode && e.target.parentNode.id === 'listShow')
-            {
-                const content = e.target.textContent;
-                clearListChild(listShow);
-                recordToLocalStorage(content);
-                showImgShow(content);
-                input.value = '';
-            }else if(e.target.parentNode && e.target.parentNode.id !== 'listShow' && e.target.id !== 'search' && e.target.parentNode.id !== 'recentRequest')
-            {
-                clearListChild(listShow);
-            }
-            
-            
-        }
-    }
-    catch(error)
-    {
-        console.error(error);
-        throw new Error('Error with read click mouse');
+            const content = e.target.textContent;
+            clearListChild(listShow);
+            recordToLocalStorage(content);
+            showImgShow(content);
+            input.value = '';
+        }else if(e.target.parentNode && e.target.parentNode.id !== 'listShow' && e.target.id !== 'search' && e.target.parentNode.id !== 'recentRequest')
+        {
+            clearListChild(listShow);
+        }   
     }
 });
 
