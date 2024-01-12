@@ -282,20 +282,22 @@ const showImgShow = (content) =>
 
 document.addEventListener('click',(e) =>
 {
-    if(e.target)
+    if(!e.target) return;
+    
+    if(e.target.closest('#listShow'))
     {
-        if(e.target.parentNode && e.target.parentNode.id === 'listShow')
-        {
-            const content = e.target.textContent;
-            clearListChild(listShow);
-            recordToLocalStorage(content);
-            showImgShow(content);
-            input.value = '';
-        }else if(e.target.parentNode && e.target.parentNode.id !== 'listShow' && e.target.id !== 'search' && e.target.parentNode.id !== 'recentRequest')
-        {
-            clearListChild(listShow);
-        }   
-    }
+        const content = e.target.textContent;
+        clearListChild(listShow);
+        recordToLocalStorage(content);
+        showImgShow(content);
+        input.value = '';
+        return
+    } 
+    
+    if(e.target.id !== 'search' && !e.target.closest('#recentRequest'))
+        clearListChild(listShow);
+        
+    
 });
 
 const updateRecentAfterLoadedDoomOrChangeStorage = () =>
