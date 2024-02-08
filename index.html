@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Mountains of Christmas' rel='stylesheet'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="module" src="./assets/js/index.js" defer></script>
+
+    <title>LocalStorage</title>
+</head>
+<body>
+    <canvas></canvas>
+    <header>
+
+    </header>
+    <main class="search">
+        <div class="container block_search ">
+            <div class="row mt-5 position-relative">
+                <div class="col">
+                    <h1 class="h1 text-center mb-3"> <span class="" id="beautifullView"></span></h1>
+                </div>
+                <div class="row">
+                    <div class="input-group mb-0 w-75 m-auto">
+                        <span class="input-group-text" id="inputGroup-sizing-default"><img src="./assets/img/search-interface-symbol.png" class="search-img" alt="search"/></span>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="search">
+                    </div>
+                </div>
+                <div class="row w-75 m-auto position-absolute placeList">
+                    <ul class="list-group pe-4 " id="listShow">
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="older-request position-absolute top-0 end-0 mt-5 me-5">
+            <div class="row">
+                <h4 class="h4"> Recent requests </h4>
+            </div>
+            <div class="row">
+                <ul class="list-group pe-4 " id="recentRequest">
+                    <li class="list-group-item mylist ">No recent request</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+    <section class="mt-5">
+        <div class="container">
+            <div class="d-flex justify-content-center align-items-center">
+                <img src="" class="" id="imgShow"  />
+            </div>
+        </div>
+    </section>
+    <footer>
+
+    </footer>
+</body>
+</html>

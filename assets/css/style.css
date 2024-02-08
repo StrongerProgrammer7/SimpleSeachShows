@@ -1,0 +1,49 @@
+body
+{
+    background: rgb(240, 240, 240);
+    font-family: 'Mountains of Christmas';
+}
+
+.block_search
+{
+    margin-top: 12em;
+}
+.mylist
+{
+    cursor: pointer;
+    transition: background-color ease 0.4s, color ease-out 0.35s;
+}
+.mylist:hover
+{
+    
+    color:white;
+    background-color: rgba(47, 158, 189, 0.42);
+
+    transition: background-color ease 0.4s, color ease-out 0.35s;
+}
+
+.recentElem
+{
+    color:red;
+}
+
+.search-img
+{
+    width: 1em;
+}
+
+
+canvas {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+
+  .placeList
+  {
+    top:105px;
+    right: 0;
+    left: 0;
+  }
